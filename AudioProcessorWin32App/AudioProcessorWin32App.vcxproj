@@ -128,12 +128,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AudioProcessorWin32App.h" />
+    <ClInclude Include="FileHandler.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioProcessorWin32App.cpp" />
+    <ClCompile Include="FileHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AudioProcessorWin32App.rc" />
