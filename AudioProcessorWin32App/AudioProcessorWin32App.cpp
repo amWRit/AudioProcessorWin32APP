@@ -9,12 +9,18 @@
 
 #define MAX_LOADSTRING 100
 
+#define ID_OPEN_FILE 1001
+#define ID_REVERSE 1002
+#define ID_SAVE_FILE 2001
+
 // Global Variables:
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
-HWND hwndButton;
+HWND hwndOpenFileButton;
+HWND hwndReverseButton;
+HWND hwndSaveButton;
 HWND hwndInputFilePathBox;
 HWND hwndOutputFilePathBox;
 wchar_t g_selectedFilePath[260] = { 0 }; // Global variable
@@ -26,6 +32,8 @@ LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 void OpenFileDialog(HWND hWnd);
+//void OnReverseClicked(HWND hWnd);
+//void OnSaveFileClicked(HWND hWnd);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _In_opt_ HINSTANCE hPrevInstance,
@@ -136,28 +144,51 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     switch (message)
     {
     case WM_CREATE:
-        // Create the Open file button
-        hwndButton = CreateWindowW(L"BUTTON", L"Open file",
-            WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-            150, 100, 100, 40, hWnd, (HMENU)1, hInst, NULL);
-
         // Create the text box
         hwndInputFilePathBox = CreateWindowW(L"EDIT", L"", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL,
             150, 50, 700, 25, hWnd, (HMENU)2, hInst, NULL);  // ES_AUTOHSCROLL adds horizontal scrolling if needed
-        break;
+        
 
+        // Create the Open file button
+        hwndOpenFileButton = CreateWindowW(L"BUTTON", L"Open file",
+            WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+            250, 100, 100, 40, hWnd, (HMENU)ID_OPEN_FILE, hInst, NULL);
+
+        // Create the Reverse button
+        hwndOpenFileButton = CreateWindowW(L"BUTTON", L"Reverse",
+            WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+            450, 100, 100, 40, hWnd, (HMENU)ID_REVERSE, hInst, NULL);
+
+        // Create the Save file button
+        hwndOpenFileButton = CreateWindowW(L"BUTTON", L"Save file",
+            WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+            650, 100, 100, 40, hWnd, (HMENU)ID_SAVE_FILE, hInst, NULL);
+
+        break;
     case WM_COMMAND:
     {
         int wmId = LOWORD(wParam);
         // Parse the menu selections:
         switch (wmId)
         {
-        case 1:  // Open File Button click event (ID 1)
+        case ID_OPEN_FILE:  // Open File Button click event (ID 1)
         {
             // Open the file dialog
             static FileHandler fileHandler;
             fileHandler.OpenFileDialog(hWnd);
             SetWindowTextW(hwndInputFilePathBox, fileHandler.GetInputFilePath());
+            break;
+        }
+
+        case ID_REVERSE: // Reverse Audio
+        {
+            //OnReverseClicked(hWnd);
+            break;
+        }
+
+        case ID_SAVE_FILE: // Save File
+        {
+            //OnSaveFileClicked(hWnd);
             break;
         }
         case IDM_ABOUT:
