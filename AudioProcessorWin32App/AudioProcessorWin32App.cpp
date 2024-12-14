@@ -6,6 +6,15 @@
 #include <commdlg.h>  // For file dialogs
 #include "FileHandler.h"
 
+#include "Settings.h"
+#include "AudioProcessingManager.h"
+#include "AudioFileHandlerFactory.h"
+//#include "AudioProcessingStrategyFactory.h"
+//#include "FFTProcessor.h"
+//#include "/InstrumentFactory.h"
+//#include "SignalProcessor.h"
+#include "AudioFile.h"
+#include "Utils.h"
 
 #define MAX_LOADSTRING 100
 
@@ -17,13 +26,18 @@
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
+const wchar_t* strategyType;
 
 HWND hwndOpenFileButton;
 HWND hwndReverseButton;
-HWND hwndSaveButton;
+HWND hwndSaveFileButton;
 HWND hwndInputFilePathBox;
-HWND hwndOutputFilePathBox;
+HWND hwndFactorBox;
 wchar_t g_selectedFilePath[260] = { 0 }; // Global variable
+
+FileHandler fileHandler;
+std::shared_ptr<AudioFileHandler> audioFileHandler = nullptr;
+AudioProcessingManager audioProcessingManager;
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -31,7 +45,7 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
-void OpenFileDialog(HWND hWnd);
+//void OpenFileDialog(HWND hWnd);
 //void OnReverseClicked(HWND hWnd);
 //void OnSaveFileClicked(HWND hWnd);
 
@@ -160,10 +174,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             450, 100, 100, 40, hWnd, (HMENU)ID_REVERSE, hInst, NULL);
 
         // Create the Save file button
-        hwndOpenFileButton = CreateWindowW(L"BUTTON", L"Save file",
+        hwndSaveFileButton = CreateWindowW(L"BUTTON", L"Save file",
             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
             650, 100, 100, 40, hWnd, (HMENU)ID_SAVE_FILE, hInst, NULL);
-
+        EnableWindow(hwndSaveFileButton, FALSE);
         break;
     case WM_COMMAND:
     {
@@ -174,21 +188,84 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case ID_OPEN_FILE:  // Open File Button click event (ID 1)
         {
             // Open the file dialog
-            static FileHandler fileHandler;
+            /*static FileHandler fileHandler;*/
             fileHandler.OpenFileDialog(hWnd);
             SetWindowTextW(hwndInputFilePathBox, fileHandler.GetInputFilePath());
+
+            // Use the utility function to convert wide string to std::string
+            std::string inputFilePath = Utils::WideToString(fileHandler.GetInputFilePath());
+
+            audioFileHandler = audioProcessingManager.loadAudioFile(inputFilePath);
+            if (audioFileHandler) {
+                //audioProcessingManager.setFileHandler(audioFileHandler);
+                MessageBox(hWnd, L"Audio loaded successfully!", L"Success", MB_OK);
+            }
+            else {
+                MessageBox(hWnd, L"Failed to load audio file!", L"Error", MB_OK | MB_ICONERROR);
+            }
+
             break;
         }
 
         case ID_REVERSE: // Reverse Audio
         {
             //OnReverseClicked(hWnd);
+             strategyType = L"audioReverse";
+            // Call the reverseAudio method from AudioProcessingManager
+            bool success = audioProcessingManager.reverseAudio();
+
+            //const char* str = success ? "true" : "false";
+            //OutputDebugStringA(str);
+
+            if (success) {
+                EnableWindow(hwndSaveFileButton, TRUE);
+                MessageBox(hWnd, L"Audio reversed successfully!", L"Success", MB_OK);
+            }
+            else
+            {
+                MessageBox(hWnd, L"Failed to reverse audio file!", L"Error", MB_OK | MB_ICONERROR);
+                break;
+            }
             break;
         }
 
         case ID_SAVE_FILE: // Save File
         {
             //OnSaveFileClicked(hWnd);
+            wchar_t filename[MAX_PATH];
+            swprintf_s(filename, MAX_PATH, L"%ls_output.wav", strategyType);
+
+            // Set the output file path in fileHandler
+            fileHandler.SetOutputFilePath(filename);
+            std::string outputFilePath = Utils::WideToString(fileHandler.GetOutputFilePath());
+
+            std::string debugMessage = "\n\nOutput file path: " + outputFilePath;
+            OutputDebugStringA(debugMessage.c_str());
+
+            std::vector<double> timeDomainSignal = audioProcessingManager.getProcessedSignal();
+
+            
+            if (timeDomainSignal.empty())
+            {
+                MessageBox(hWnd, L"Empty signal.", L"Error", MB_OK | MB_ICONERROR);
+                break;
+            }
+
+            // Save the processed audio
+            bool success = audioFileHandler->saveAudio(outputFilePath, timeDomainSignal, audioFileHandler->getSampleRate());
+            if (success) {
+                OutputDebugStringA("Audio saved successfully.\n");
+
+                std::wstring message = L"Audio saved successfully!\n";
+                message += fileHandler.GetOutputFilePath();  // Append the output file path
+
+                MessageBox(hWnd, message.c_str(), L"Success", MB_OK);
+            }
+            else {
+                OutputDebugStringA("Failed to save audio.\n");
+                MessageBox(hWnd, L"Failed to save audio file!", L"Error", MB_OK | MB_ICONERROR);
+                break;
+            }
             break;
         }
         case IDM_ABOUT:
