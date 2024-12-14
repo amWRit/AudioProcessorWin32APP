@@ -127,15 +127,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AudioFile.h" />
+    <ClInclude Include="AudioFileHandlerFactory.h" />
+    <ClInclude Include="AudioProcessingManager.h" />
+    <ClInclude Include="AudioProcessingStrategy.h" />
+    <ClInclude Include="AudioProcessingStrategyFactory.h" />
     <ClInclude Include="AudioProcessorWin32App.h" />
+    <ClInclude Include="AudioReverseStrategy.h" />
     <ClInclude Include="FileHandler.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="AudioFileHandler.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Settings.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Utils.h" />
+    <ClInclude Include="WaveAudioFileHandler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AudioProcessingManager.cpp" />
     <ClCompile Include="AudioProcessorWin32App.cpp" />
     <ClCompile Include="FileHandler.cpp" />
+    <ClCompile Include="Settings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AudioProcessorWin32App.rc" />
