@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\My Documents\\DSPProjects\\AudioProcessorWin32App\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C5796E92-B48B-4876-98F5-0C13BE67AE78}|AudioProcessorWin32App\\AudioProcessorWin32App.vcxproj|C:\\My Documents\\DSPProjects\\AudioProcessorWin32App\\AudioProcessorWin32App\\ChangeAudioVolumeStrategy.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{C5796E92-B48B-4876-98F5-0C13BE67AE78}|AudioProcessorWin32App\\AudioProcessorWin32App.vcxproj|solutionrelative:AudioProcessorWin32App\\ChangeAudioVolumeStrategy.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{C5796E92-B48B-4876-98F5-0C13BE67AE78}|AudioProcessorWin32App\\AudioProcessorWin32App.vcxproj|C:\\My Documents\\DSPProjects\\AudioProcessorWin32App\\AudioProcessorWin32App\\AudioProcessingStrategyFactory.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{C5796E92-B48B-4876-98F5-0C13BE67AE78}|AudioProcessorWin32App\\AudioProcessorWin32App.vcxproj|solutionrelative:AudioProcessorWin32App\\AudioProcessingStrategyFactory.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C5796E92-B48B-4876-98F5-0C13BE67AE78}|AudioProcessorWin32App\\AudioProcessorWin32App.vcxproj|C:\\My Documents\\DSPProjects\\AudioProcessorWin32App\\AudioProcessorWin32App\\ChangeAudioVolumeStrategy.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{C5796E92-B48B-4876-98F5-0C13BE67AE78}|AudioProcessorWin32App\\AudioProcessorWin32App.vcxproj|solutionrelative:AudioProcessorWin32App\\ChangeAudioVolumeStrategy.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C5796E92-B48B-4876-98F5-0C13BE67AE78}|AudioProcessorWin32App\\AudioProcessorWin32App.vcxproj|C:\\My Documents\\DSPProjects\\AudioProcessorWin32App\\AudioProcessorWin32App\\ChangeAudioSpeedStrategy.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -38,11 +38,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "AudioProcessingStrategyFactory.h",
               "DocumentMoniker": "C:\\My Documents\\DSPProjects\\AudioProcessorWin32App\\AudioProcessorWin32App\\AudioProcessingStrategyFactory.h",
               "RelativeDocumentMoniker": "AudioProcessorWin32App\\AudioProcessingStrategyFactory.h",
@@ -55,7 +55,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "ChangeAudioVolumeStrategy.h",
               "DocumentMoniker": "C:\\My Documents\\DSPProjects\\AudioProcessorWin32App\\AudioProcessorWin32App\\ChangeAudioVolumeStrategy.h",
               "RelativeDocumentMoniker": "AudioProcessorWin32App\\ChangeAudioVolumeStrategy.h",
@@ -76,8 +76,7 @@
               "RelativeToolTip": "AudioProcessorWin32App\\Dialogs.h",
               "ViewState": "AgIAAAwAAAAAAAAAAAAAABgAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-12-20T05:28:17.352Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-20T05:28:17.352Z"
             },
             {
               "$type": "Document",
@@ -89,8 +88,7 @@
               "RelativeToolTip": "AudioProcessorWin32App\\Dialogs.cpp",
               "ViewState": "AgIAAEoAAAAAAAAAAAAewF8AAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-20T05:25:33.582Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-20T05:25:33.582Z"
             },
             {
               "$type": "Document",
@@ -102,8 +100,7 @@
               "RelativeToolTip": "AudioProcessorWin32App\\ChangeAudioSpeedStrategy.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-12-20T05:14:31.69Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-20T05:14:31.69Z"
             },
             {
               "$type": "Document",
@@ -115,8 +112,7 @@
               "RelativeToolTip": "AudioProcessorWin32App\\AudioProcessingManager.cpp",
               "ViewState": "AgIAAHUAAAAAAAAAAAAAAIMAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-20T05:12:42.35Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-20T05:12:42.35Z"
             },
             {
               "$type": "Document",
@@ -128,8 +124,7 @@
               "RelativeToolTip": "AudioProcessorWin32App\\AudioProcessorWin32App.cpp",
               "ViewState": "AgIAAOcAAAAAAAAAAAAAADsBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-19T10:31:04.229Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-19T10:31:04.229Z"
             }
           ]
         }

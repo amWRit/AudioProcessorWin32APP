@@ -1,7 +1,5 @@
 ﻿  AudioProcessingManager.cpp
-  AudioProcessorWin32App.cpp
-C:\My Documents\DSPProjects\AudioProcessorWin32App\AudioProcessorWin32App\Settings.h(7,38): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'AudioProcessorWin32App.cpp')
-  
+  Dialogs.cpp
   Generating Code...
+  LINK : C:\My Documents\DSPProjects\AudioProcessorWin32App\x64\Debug\AudioProcessorWin32App.exe not found or not built by the last incremental link; performing full link
   AudioProcessorWin32App.vcxproj -> C:\My Documents\DSPProjects\AudioProcessorWin32App\x64\Debug\AudioProcessorWin32App.exe
