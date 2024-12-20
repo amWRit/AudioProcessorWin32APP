@@ -4,11 +4,13 @@
 
 #include <windows.h>
 #include "resource.h"
+#include "EnumClass.h"
 
 // Function declarations for each dialog box
 INT_PTR CALLBACK ReverbDialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK VolumeDialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK SpeedDialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK ExtractAudioDialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 // Additional helper functions, if needed
 struct ReverbParameters {
@@ -29,6 +31,12 @@ struct SpeedParameters {
     double speedFactor;
     // Constructor to initialize with default values
     SpeedParameters() : speedFactor(2.0) {}  // Default values
+};
+
+struct ExtractParameters {
+    InstrumentType instrumentType;
+    // Constructor to initialize with default values
+    ExtractParameters() : instrumentType(InstrumentType::Guitar) {}  // Default values
 };
 
 #endif // DIALOGS_H

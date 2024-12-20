@@ -199,6 +199,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
             700, 100, 150, 40, hWnd, (HMENU)ID_CHANGE_VOLUME, hInst, NULL);
 
+        // Create the Extract audio button
+        hwndExtractAudioButton = CreateWindowW(L"BUTTON", L"Extract Audio",
+            WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+            450, 200, 150, 40, hWnd, (HMENU)ID_EXTRACT_AUDIO, hInst, NULL);
+
         // Create the Save file button
         hwndSaveFileButton = CreateWindowW(L"BUTTON", L"Save file",
             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
@@ -322,6 +327,29 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             else
             {
                 MessageBox(hWnd, L"Failed to change volume of the audio file!", L"Error", MB_OK | MB_ICONERROR);
+                break;
+            }
+            break;
+        }
+
+        case ID_EXTRACT_AUDIO: // extract  audio
+        {
+            audioProcessingManager.strategyType = StrategyType::AudioExtract;
+
+            bool success = false;
+            ExtractParameters extractParams;
+            if (DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_EXTRACT_AUDIO_DIALOG), hWnd,
+                ExtractAudioDialogProc, reinterpret_cast<LPARAM>(&extractParams)) == IDOK) {
+                success = audioProcessingManager.extractAudio(extractParams.instrumentType);
+            }
+
+            if (success) {
+                EnableWindow(hwndSaveFileButton, TRUE);
+                MessageBox(hWnd, L"Extracted audio successfully!", L"Success", MB_OK);
+            }
+            else
+            {
+                MessageBox(hWnd, L"Failed to extract the audio file!", L"Error", MB_OK | MB_ICONERROR);
                 break;
             }
             break;

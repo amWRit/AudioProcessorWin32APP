@@ -75,6 +75,42 @@
     <ClInclude Include="EnumClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ExtractAudioChunksStrategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SignalProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FFTProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Instrument.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InstrumentFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Guitar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Drum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Piano.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Synth.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XXHuman.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XYHuman.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cymbal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioProcessorWin32App.cpp">
@@ -90,6 +126,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Dialogs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FFTProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InstrumentFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SignalProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -19,6 +19,7 @@ class AudioProcessingManager {
         bool reverbAudio(double delayTime, double decayFactor);
         bool changeSpeed(double speedFactor);
         bool changeVolume(double volumeFactor);
+        bool extractAudio(InstrumentType instrumentType);
 
         StrategyType strategyType;
 

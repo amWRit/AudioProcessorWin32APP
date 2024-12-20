@@ -145,23 +145,38 @@
     <ClInclude Include="AudioReverseStrategy.h" />
     <ClInclude Include="ChangeAudioSpeedStrategy.h" />
     <ClInclude Include="ChangeAudioVolumeStrategy.h" />
+    <ClInclude Include="Cymbal.h" />
     <ClInclude Include="Dialogs.h" />
+    <ClInclude Include="Drum.h" />
     <ClInclude Include="EnumClass.h" />
+    <ClInclude Include="ExtractAudioChunksStrategy.h" />
+    <ClInclude Include="FFTProcessor.h" />
     <ClInclude Include="FileHandler.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="AudioFileHandler.h" />
+    <ClInclude Include="Guitar.h" />
+    <ClInclude Include="Instrument.h" />
+    <ClInclude Include="InstrumentFactory.h" />
+    <ClInclude Include="Piano.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Settings.h" />
+    <ClInclude Include="SignalProcessor.h" />
+    <ClInclude Include="Synth.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="WaveAudioFileHandler.h" />
+    <ClInclude Include="XXHuman.h" />
+    <ClInclude Include="XYHuman.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioProcessingManager.cpp" />
     <ClCompile Include="AudioProcessorWin32App.cpp" />
     <ClCompile Include="Dialogs.cpp" />
+    <ClCompile Include="FFTProcessor.cpp" />
     <ClCompile Include="FileHandler.cpp" />
+    <ClCompile Include="InstrumentFactory.cpp" />
     <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="SignalProcessor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AudioProcessorWin32App.rc" />
