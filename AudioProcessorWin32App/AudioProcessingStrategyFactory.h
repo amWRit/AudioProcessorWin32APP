@@ -6,17 +6,18 @@
 #include <string>
 #include <variant>
 #include <unordered_map>
+#include <cstdio>
 
 
 #include "AudioFileHandler.h"
 #include "AudioProcessingStrategy.h"
-//#include "ExtractAudioChunksStrategy.h"
+#include "ExtractAudioChunksStrategy.h"
 //#include "FilterFrequencyRangeStrategy.h"
 #include "ChangeAudioSpeedStrategy.h"
 #include "ChangeAudioVolumeStrategy.h"
 #include "AudioReverbStrategy.h"
 #include "AudioReverseStrategy.h"
-//#include "InstrumentFactory.h"
+#include "InstrumentFactory.h"
 
 class AudioProcessingStrategyFactory {
 public:
@@ -28,7 +29,7 @@ public:
         if (strategyType == StrategyType::AudioExtract) {
             double lowFreq = std::get<double>(params.at("lowFreq"));
             double highFreq = std::get<double>(params.at("highFreq"));
-            //return std::make_shared<ExtractAudioChunksStrategy>(lowFreq, highFreq);
+            return std::make_shared<ExtractAudioChunksStrategy>(lowFreq, highFreq);
         }
         else if (strategyType == StrategyType::ChangeAudioSpeed) {
             double speedFactor = std::get<double>(params.at("speedFactor"));

@@ -1,4 +1,5 @@
 #include "Dialogs.h"
+#include "Utils.h"
 #include <string>
 
 //IDD_REVERB_DIALOG 200
@@ -115,3 +116,67 @@ INT_PTR CALLBACK SpeedDialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
     return FALSE;
 }
 
+INT_PTR CALLBACK ExtractAudioDialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
+    static ExtractParameters* extractParams = nullptr;
+
+    switch (message) {
+    case WM_INITDIALOG: {
+        // Initialize the dialog and set default values
+        extractParams = reinterpret_cast<ExtractParameters*>(lParam);  // Set the passed parameter
+
+        // Populate the combo box with instrument types
+        HWND hwndCombo = GetDlgItem(hDlg, IDC_COMBO_INSTRUMENT_TYPE);
+
+        // Loop through all possible InstrumentType values
+        for (const auto& pair : instrumentTypeToString) {
+            // Convert the enum to a wide string (since SendMessage requires LPARAM to be a wide string)
+            std::wstring instrumentName = Utils::stringToWstring(pair.second); // Convert string to wstring
+            SendMessage(hwndCombo, CB_ADDSTRING, 0, (LPARAM)instrumentName.c_str());
+        }
+
+        SendMessage(hwndCombo, CB_SETCURSEL, 0, 0); // Set default selection to "Guitar"
+        return (INT_PTR)TRUE;
+    }
+
+    case WM_COMMAND:
+        if (LOWORD(wParam) == IDOK) {
+            // Get the selected instrument type from the combo box
+            HWND hwndCombo = GetDlgItem(hDlg, IDC_COMBO_INSTRUMENT_TYPE);
+            int selectedIndex = (int)SendMessage(hwndCombo, CB_GETCURSEL, 0, 0);
+
+            wchar_t instrumentType[50];
+            SendMessage(hwndCombo, CB_GETLBTEXT, selectedIndex, (LPARAM)instrumentType);
+
+            // Convert the selected string to std::string
+            std::wstring instrumentStr(instrumentType);
+            std::string selectedInstrumentStr = Utils::WideToString(instrumentStr.c_str());
+
+            // Search the string in the instrumentTypeToString map
+            InstrumentType selectedInstrument = InstrumentType::Unknown;  // Default to Unknown
+            for (const auto& pair : instrumentTypeToString) {
+                if (pair.second == selectedInstrumentStr) {
+                    selectedInstrument = pair.first;
+                    break;
+                }
+            }
+
+            // Set the selected instrument type in the ExtractParameters struct
+            extractParams->instrumentType = selectedInstrument;
+
+            std::string debugMessage = "\n\ninst type: " + selectedInstrumentStr;
+            OutputDebugStringA(debugMessage.c_str());
+
+            // Close the dialog
+            EndDialog(hDlg, LOWORD(wParam));
+            return (INT_PTR)TRUE;
+        }
+        else if (LOWORD(wParam) == IDCANCEL) {
+            // If the cancel button is pressed, close the dialog
+            EndDialog(hDlg, LOWORD(wParam));
+            return (INT_PTR)TRUE;
+        }
+        break;
+    }
+
+    return (INT_PTR)FALSE;
+}

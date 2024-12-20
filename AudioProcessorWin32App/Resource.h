@@ -19,6 +19,9 @@
 #define IDC_SPEED                       301
 #define IDD_VOLUME_DIALOG               400
 #define IDC_VOLUME                      401
+#define IDD_EXTRACT_AUDIO_DIALOG        500
+#define IDC_COMBO_INSTRUMENT_TYPE		501
+#define ID_EXTRACT_AUDIO				502
 #define IDC_STATIC                      -1
 
 // Next default values for new objects

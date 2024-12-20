@@ -3,6 +3,8 @@
 #include "Utils.h"                  // For utility functions
 #include <algorithm>                // For std::transform
 #include <iostream>                 // For debugging/logging
+#include <string>
+#include <cstdio>
 #include "AudioProcessingStrategyFactory.h"
 
 #include "framework.h"
@@ -129,9 +131,59 @@ bool AudioProcessingManager::changeVolume(double volumeFactor) {
     params["volumeFactor"] = volumeFactor;
 
     char buffer[256];
-    sprintf_s
-    (buffer, "%.2f", volumeFactor);  // Adjust the precision as needed
+    sprintf_s(buffer, "%.2f", volumeFactor);  // Adjust the precision as needed
     OutputDebugStringA(buffer);
+
+    // Create the reverse audio processing strategy
+    auto strategy = AudioProcessingStrategyFactory::createStrategy(strategyType, params);
+    if (!strategy) {
+        OutputDebugStringA("Unsupported strategy!");
+        std::cerr << "Unsupported strategy!" << std::endl;
+        return false;
+    }
+    // Process the audio file and save the signal
+
+    std::vector<double> outputSignal = strategy->process(fileHandler);
+    setProcessedSignal(outputSignal);
+    return true;
+}
+
+bool AudioProcessingManager::extractAudio(InstrumentType instrumentType) {
+    if (!fileHandler) {
+        OutputDebugStringA("No audio file loaded!");
+        std::cerr << "No audio file loaded!" << std::endl;
+        return false;
+    }
+
+    AudioProcessingStrategyFactory::ParamMap params;
+    std::shared_ptr<Instrument> instrument = InstrumentFactory::createInstrument(instrumentType);
+    if (instrument) {
+        //std::string selectedInstrumentStr = Utils::WideToString(instrumentStr.c_str());
+        std::string debugMessage = "\n\ninst type: " + toString(instrumentType);
+        OutputDebugStringA(debugMessage.c_str());
+        params["lowFreq"] = instrument->getLowFreq();
+        params["highFreq"] = instrument->getHighFreq();
+
+        char str[64]; // A larger buffer to hold the formatted double value
+        double lowFreq = std::get<double>(params["lowFreq"]);
+        double highFreq = std::get<double>(params["highFreq"]);
+
+        //// TESTING
+        sprintf_s(str, "%f", lowFreq);
+        OutputDebugStringA("low: ");
+        OutputDebugStringA(str);
+        OutputDebugStringA("\n");
+
+        sprintf_s(str, "%f", highFreq);
+        OutputDebugStringA("high: ");
+        OutputDebugStringA(str);
+        OutputDebugStringA("\n");
+    }
+    else {
+        OutputDebugStringA("Unsupported strategy!");
+        std::cerr << "Unsupported strategy!" << std::endl;
+        return false;
+    }
 
     // Create the reverse audio processing strategy
     auto strategy = AudioProcessingStrategyFactory::createStrategy(strategyType, params);
