@@ -1,7 +1,0 @@
-﻿  AudioProcessingManager.cpp
-  AudioProcessorWin32App.cpp
-C:\My Documents\DSPProjects\AudioProcessorWin32App\AudioProcessorWin32App\Settings.h(7,38): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'AudioProcessorWin32App.cpp')
-  
-  Generating Code...
-  AudioProcessorWin32App.vcxproj -> C:\My Documents\DSPProjects\AudioProcessorWin32App\x64\Debug\AudioProcessorWin32App.exe
