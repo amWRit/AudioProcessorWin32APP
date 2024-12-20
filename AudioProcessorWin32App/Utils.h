@@ -16,12 +16,31 @@ public:
         return extension;
     }
 
-    // Converts a wide string (wchar_t*) to a UTF-8 encoded std::string
+    // deprecated in c++17
+    //// Converts a wide string (wchar_t*) to a UTF-8 encoded std::string
+    //static std::string WideToString(const wchar_t* wideString) {
+    //    if (!wideString) {
+    //        return "";
+    //    }
+    //    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    //    return converter.to_bytes(wideString);
+    //}
+
     static std::string WideToString(const wchar_t* wideString) {
         if (!wideString) {
             return "";
         }
-        std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-        return converter.to_bytes(wideString);
+
+        // Get the length of the wide string
+        int bufferSize = WideCharToMultiByte(CP_UTF8, 0, wideString, -1, NULL, 0, NULL, NULL);
+        if (bufferSize == 0) {
+            return "";  // Return an empty string if the conversion fails
+        }
+
+        // Allocate a buffer for the UTF-8 string
+        std::string utf8String(bufferSize - 1, '\0');  // The bufferSize includes the null terminator, so subtract 1
+        WideCharToMultiByte(CP_UTF8, 0, wideString, -1, &utf8String[0], bufferSize, NULL, NULL);
+
+        return utf8String;
     }
 };

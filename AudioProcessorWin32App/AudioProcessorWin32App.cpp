@@ -9,17 +9,23 @@
 #include "Settings.h"
 #include "AudioProcessingManager.h"
 #include "AudioFileHandlerFactory.h"
-//#include "AudioProcessingStrategyFactory.h"
+#include "AudioProcessingStrategyFactory.h"
 //#include "FFTProcessor.h"
 //#include "/InstrumentFactory.h"
 //#include "SignalProcessor.h"
 #include "AudioFile.h"
 #include "Utils.h"
+#include "Dialogs.h"
+#include "resource.h"
 
 #define MAX_LOADSTRING 100
 
 #define ID_OPEN_FILE 1001
 #define ID_REVERSE 1002
+#define ID_REVERB 1003
+#define ID_CHANGE_SPEED 1004
+#define ID_CHANGE_VOLUME 1005
+#define ID_EXTRACT_AUDIO 1006
 #define ID_SAVE_FILE 2001
 
 // Global Variables:
@@ -30,6 +36,10 @@ const wchar_t* strategyType;
 
 HWND hwndOpenFileButton;
 HWND hwndReverseButton;
+HWND hwndReverbButton;
+HWND hwndChangeSpeedButton;
+HWND hwndChangeVolumeButton;
+HWND hwndExtractAudioButton;
 HWND hwndSaveFileButton;
 HWND hwndInputFilePathBox;
 HWND hwndFactorBox;
@@ -166,17 +176,33 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         // Create the Open file button
         hwndOpenFileButton = CreateWindowW(L"BUTTON", L"Open file",
             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-            250, 100, 100, 40, hWnd, (HMENU)ID_OPEN_FILE, hInst, NULL);
+            50, 100, 100, 40, hWnd, (HMENU)ID_OPEN_FILE, hInst, NULL);
 
         // Create the Reverse button
-        hwndOpenFileButton = CreateWindowW(L"BUTTON", L"Reverse",
+        hwndReverseButton = CreateWindowW(L"BUTTON", L"Reverse",
             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-            450, 100, 100, 40, hWnd, (HMENU)ID_REVERSE, hInst, NULL);
+            200, 100, 100, 40, hWnd, (HMENU)ID_REVERSE, hInst, NULL);
+
+        // Create the Reverb button
+        hwndReverbButton = CreateWindowW(L"BUTTON", L"Reverb",
+            WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+            350, 100, 100, 40, hWnd, (HMENU)ID_REVERB, hInst, NULL);
+
+        // Create the Change Speed button
+        hwndChangeSpeedButton = CreateWindowW(L"BUTTON", L"Change Speed",
+            WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+            500, 100, 150, 40, hWnd, (HMENU)ID_CHANGE_SPEED, hInst, NULL);
+
+        // Create the Change Volume button
+        hwndChangeVolumeButton = CreateWindowW(L"BUTTON", L"Change Volume",
+            WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+            700, 100, 150, 40, hWnd, (HMENU)ID_CHANGE_VOLUME, hInst, NULL);
 
         // Create the Save file button
         hwndSaveFileButton = CreateWindowW(L"BUTTON", L"Save file",
             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-            650, 100, 100, 40, hWnd, (HMENU)ID_SAVE_FILE, hInst, NULL);
+            450, 300, 100, 40, hWnd, (HMENU)ID_SAVE_FILE, hInst, NULL);
+
         EnableWindow(hwndSaveFileButton, FALSE);
         break;
     case WM_COMMAND:
@@ -224,6 +250,77 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             else
             {
                 MessageBox(hWnd, L"Failed to reverse audio file!", L"Error", MB_OK | MB_ICONERROR);
+                break;
+            }
+            break;
+        }
+
+
+        case ID_REVERB: // Reverb Audio
+        {
+            strategyType = L"audioReverb";
+
+            bool success = false;
+            ReverbParameters reverbParams;
+            if (DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_REVERB_DIALOG), hWnd, 
+                ReverbDialogProc, reinterpret_cast<LPARAM>(&reverbParams)) == IDOK) {
+                // Use reverbParams.delayTime and reverbParams.decayFactor
+                success = audioProcessingManager.reverbAudio(reverbParams.delayTime, reverbParams.decayFactor);
+            }
+
+            if (success) {
+                EnableWindow(hwndSaveFileButton, TRUE);
+                MessageBox(hWnd, L"Added reverb to the audio successfully!", L"Success", MB_OK);
+            }
+            else
+            {
+                MessageBox(hWnd, L"Failed to add reverb to the audio file!", L"Error", MB_OK | MB_ICONERROR);
+                break;
+            }
+            break;
+        }
+
+        case ID_CHANGE_SPEED: // Change speed of audio
+        {
+            strategyType = L"changeAudioSpeed";
+
+            bool success = false;
+            SpeedParameters speedParams;
+            if (DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_SPEED_DIALOG), hWnd,
+                SpeedDialogProc, reinterpret_cast<LPARAM>(&speedParams)) == IDOK) {
+                success = audioProcessingManager.changeSpeed(speedParams.speedFactor);
+            }
+
+            if (success) {
+                EnableWindow(hwndSaveFileButton, TRUE);
+                MessageBox(hWnd, L"Changed speed of the audio successfully!", L"Success", MB_OK);
+            }
+            else
+            {
+                MessageBox(hWnd, L"Failed to change speed of the audio file!", L"Error", MB_OK | MB_ICONERROR);
+                break;
+            }
+            break;
+        }
+
+        case ID_CHANGE_VOLUME: // Change volume of audio
+        {
+            strategyType = L"changeAudioVolume";
+
+            bool success = false;
+            VolumeParameters volumeParams;
+            if (DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_VOLUME_DIALOG), hWnd,
+                VolumeDialogProc, reinterpret_cast<LPARAM>(&volumeParams)) == IDOK) {
+                success = audioProcessingManager.changeVolume(volumeParams.volumeFactor);
+            }
+
+            if (success) {
+                EnableWindow(hwndSaveFileButton, TRUE);
+                MessageBox(hWnd, L"Changed volume of the audio successfully!", L"Success", MB_OK);
+            }
+            else
+            {
+                MessageBox(hWnd, L"Failed to change volume of the audio file!", L"Error", MB_OK | MB_ICONERROR);
                 break;
             }
             break;
@@ -316,53 +413,3 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     return (INT_PTR)FALSE;
 }
 
-// Open file dialog boox
-// Help: https://cplusplus.com/forum/windows/169960/
-// // NOT USED - just for backup
-//void OpenFileDialog(HWND hWnd)
-//{
-//    OPENFILENAMEW ofn;       // Common dialog box structure
-//    wchar_t szFile[260];     // Buffer for file name
-//
-//    // Initialize OPENFILENAMEW structure
-//    ZeroMemory(&szFile, sizeof(szFile));
-//    ZeroMemory(&ofn, sizeof(ofn));
-//    ofn.lStructSize = sizeof(ofn);
-//    ofn.hwndOwner = hWnd;
-//    ofn.lpstrFile = szFile;
-//    ofn.nMaxFile = sizeof(szFile);
-//    ofn.lpstrFilter = L"Wave Files (*.wav)\0*.wav\0AIFF Files (*.aiff)\0*.aiff\0All Supported Files (*.wav;*.aiff)\0*.wav;*.aiff\0";
-//    ofn.nFilterIndex = 1;
-//    ofn.lpstrFileTitle = NULL;
-//    ofn.nMaxFileTitle = 0;
-//    ofn.lpstrInitialDir = NULL;
-//    ofn.lpstrTitle = L"Select a File";
-//    ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-//
-//    // Display the file dialog
-//    if (GetOpenFileNameW(&ofn) == TRUE)
-//    {
-//        // File selected, show the path in the message box
-//        MessageBoxW(hWnd, ofn.lpstrFile, L"Selected File", MB_OK);
-//        // File selected; set its path in the edit control
-//        SetWindowTextW(hwndFilePathBox, ofn.lpstrFile);
-//    }
-//    else
-//    {
-//        // Handle the cancellation or error
-//        DWORD error = CommDlgExtendedError();
-//        if (error == 0)
-//        {
-//            // User canceled the dialog
-//            MessageBoxW(hWnd, L"File selection canceled.", L"Info", MB_OK | MB_ICONINFORMATION);
-//        }
-//        else
-//        {
-//            // An error occurred
-//            wchar_t errorMessage[256];
-//            swprintf_s(errorMessage, L"Error occurred. Code: 0x%08X", error);
-//            MessageBoxW(hWnd, errorMessage, L"Error", MB_OK | MB_ICONERROR);
-//        }
-//    }
-//
-//}
