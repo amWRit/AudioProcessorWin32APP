@@ -56,7 +56,7 @@ bool AudioProcessingManager::reverseAudio() {
     AudioProcessingStrategyFactory::ParamMap params;
 
     // Create the reverse audio processing strategy
-    auto strategy = AudioProcessingStrategyFactory::createStrategy("audioReverse", params = {});
+    auto strategy = AudioProcessingStrategyFactory::createStrategy(strategyType, params = {});
     if (!strategy) {
         OutputDebugStringA("Unsupported strategy!");
         std::cerr << "Unsupported strategy!" << std::endl;
@@ -81,7 +81,7 @@ bool AudioProcessingManager::reverbAudio(double delayTime, double decayFactor) {
     params["decayFactor"] = decayFactor;
 
     // Create the reverse audio processing strategy
-    auto strategy = AudioProcessingStrategyFactory::createStrategy("audioReverb", params);
+    auto strategy = AudioProcessingStrategyFactory::createStrategy(strategyType, params);
     if (!strategy) {
         OutputDebugStringA("Unsupported strategy!");
         std::cerr << "Unsupported strategy!" << std::endl;
@@ -105,7 +105,7 @@ bool AudioProcessingManager::changeSpeed(double speedFactor) {
     params["speedFactor"] = speedFactor;
 
     // Create the reverse audio processing strategy
-    auto strategy = AudioProcessingStrategyFactory::createStrategy("changeAudioSpeed", params);
+    auto strategy = AudioProcessingStrategyFactory::createStrategy(strategyType, params);
     if (!strategy) {
         OutputDebugStringA("Unsupported strategy!");
         std::cerr << "Unsupported strategy!" << std::endl;
@@ -129,11 +129,12 @@ bool AudioProcessingManager::changeVolume(double volumeFactor) {
     params["volumeFactor"] = volumeFactor;
 
     char buffer[256];
-    sprintf_s(buffer, "%.2f", volumeFactor);  // Adjust the precision as needed
+    sprintf_s
+    (buffer, "%.2f", volumeFactor);  // Adjust the precision as needed
     OutputDebugStringA(buffer);
 
     // Create the reverse audio processing strategy
-    auto strategy = AudioProcessingStrategyFactory::createStrategy("changeAudioVolume", params);
+    auto strategy = AudioProcessingStrategyFactory::createStrategy(strategyType, params);
     if (!strategy) {
         OutputDebugStringA("Unsupported strategy!");
         std::cerr << "Unsupported strategy!" << std::endl;

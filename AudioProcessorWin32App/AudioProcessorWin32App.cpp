@@ -7,6 +7,7 @@
 #include "FileHandler.h"
 
 #include "Settings.h"
+#include "EnumClass.h"
 #include "AudioProcessingManager.h"
 #include "AudioFileHandlerFactory.h"
 #include "AudioProcessingStrategyFactory.h"
@@ -236,7 +237,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case ID_REVERSE: // Reverse Audio
         {
             //OnReverseClicked(hWnd);
-             strategyType = L"audioReverse";
+             audioProcessingManager.strategyType = StrategyType::AudioReverse;
             // Call the reverseAudio method from AudioProcessingManager
             bool success = audioProcessingManager.reverseAudio();
 
@@ -258,7 +259,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         case ID_REVERB: // Reverb Audio
         {
-            strategyType = L"audioReverb";
+            audioProcessingManager.strategyType = StrategyType::AudioReverb;
 
             bool success = false;
             ReverbParameters reverbParams;
@@ -282,7 +283,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         case ID_CHANGE_SPEED: // Change speed of audio
         {
-            strategyType = L"changeAudioSpeed";
+            audioProcessingManager.strategyType = StrategyType::ChangeAudioSpeed;
 
             bool success = false;
             SpeedParameters speedParams;
@@ -305,7 +306,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         case ID_CHANGE_VOLUME: // Change volume of audio
         {
-            strategyType = L"changeAudioVolume";
+            audioProcessingManager.strategyType = StrategyType::ChangeAudioVolume;
 
             bool success = false;
             VolumeParameters volumeParams;
@@ -330,7 +331,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             //OnSaveFileClicked(hWnd);
             wchar_t filename[MAX_PATH];
-            swprintf_s(filename, MAX_PATH, L"%ls_output.wav", strategyType);
+            //swprintf_s(filename, MAX_PATH, L"%ls_output.wav", toString(audioProcessingManager.strategyType));
+
+            std::wstring strategyTypeString = Utils::stringToWstring(toString(audioProcessingManager.strategyType));
+            swprintf_s(filename, MAX_PATH, L"%ls_output.wav", strategyTypeString.c_str());
 
             // Set the output file path in fileHandler
             fileHandler.SetOutputFilePath(filename);

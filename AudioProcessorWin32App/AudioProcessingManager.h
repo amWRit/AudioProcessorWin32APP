@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 #include "AudioFileHandler.h" // Include the necessary header for AudioFileHandler
+#include "EnumClass.h"
 
 class AudioProcessingManager {
     public:
@@ -19,9 +20,12 @@ class AudioProcessingManager {
         bool changeSpeed(double speedFactor);
         bool changeVolume(double volumeFactor);
 
+        StrategyType strategyType;
+
     private:
         std::shared_ptr<AudioFileHandler> fileHandler; // Store the audio file handler
         std::vector<double> processedSignal;
+        
 };
 
 #endif // AUDIO_PROCESSOR_MANAGER_H

@@ -146,6 +146,7 @@
     <ClInclude Include="ChangeAudioSpeedStrategy.h" />
     <ClInclude Include="ChangeAudioVolumeStrategy.h" />
     <ClInclude Include="Dialogs.h" />
+    <ClInclude Include="EnumClass.h" />
     <ClInclude Include="FileHandler.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="AudioFileHandler.h" />
