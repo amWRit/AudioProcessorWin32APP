@@ -23,27 +23,27 @@ public:
     using ParamMap = std::unordered_map<std::string, std::variant<std::string, double, int>>;
 
     static std::shared_ptr<AudioProcessingStrategy> createStrategy(
-        const std::string& strategyType, const ParamMap& params = {}) {
+        const StrategyType strategyType, const ParamMap& params = {}) {
 
-        if (strategyType == "audioExtract") {
+        if (strategyType == StrategyType::AudioExtract) {
             double lowFreq = std::get<double>(params.at("lowFreq"));
             double highFreq = std::get<double>(params.at("highFreq"));
             //return std::make_shared<ExtractAudioChunksStrategy>(lowFreq, highFreq);
         }
-        else if (strategyType == "changeAudioSpeed") {
+        else if (strategyType == StrategyType::ChangeAudioSpeed) {
             double speedFactor = std::get<double>(params.at("speedFactor"));
             return std::make_shared<ChangeAudioSpeedStrategy>(speedFactor);
         }
-        else if (strategyType == "changeAudioVolume") {
+        else if (strategyType == StrategyType::ChangeAudioVolume) {
             double volumeFactor = std::get<double>(params.at("volumeFactor"));
             return std::make_shared<ChangeAudioVolumeStrategy>(volumeFactor);
         }
-        else if (strategyType == "audioReverb") {
+        else if (strategyType == StrategyType::AudioReverb) {
             double delayTime = std::get<double>(params.at("delayTime"));
             double decayFactor = std::get<double>(params.at("decayFactor"));
             return std::make_shared<AudioReverbStrategy>(delayTime, decayFactor);
         }
-        else if (strategyType == "audioReverse") {
+        else if (strategyType == StrategyType::AudioReverse) {
             return std::make_shared<AudioReverseStrategy>();
         }
 
