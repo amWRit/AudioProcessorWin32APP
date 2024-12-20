@@ -15,6 +15,10 @@ class AudioProcessingManager {
         std::shared_ptr<AudioFileHandler> loadAudioFile(const std::string& filePath);
 
         bool reverseAudio();
+        bool reverbAudio(double delayTime, double decayFactor);
+        bool changeSpeed(double speedFactor);
+        bool changeVolume(double volumeFactor);
+
     private:
         std::shared_ptr<AudioFileHandler> fileHandler; // Store the audio file handler
         std::vector<double> processedSignal;
