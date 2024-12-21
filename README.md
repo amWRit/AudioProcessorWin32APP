@@ -30,19 +30,19 @@ This Win32 desktop application is an enhanced version of a console-based applica
 ### Images
 
 ### 1. **User-Friendly Interface**
-<img src="images/main_interface.jpg" alt="Main Interface" width="600"/>
+<img src="images/main_interface.JPG" alt="Main Interface" width="600"/>
 
 ### 2. **Audio Reverb**
-<img src="images/audio_reverb.jpg" alt="Audio Reverb" width="600"/>
+<img src="images/audio_reverb.JPG" alt="Audio Reverb" width="600"/>
 
 ### 3. **Change Audio Speed**
-<img src="images/audio_speed.jpg" alt="Change Audio Speed" width="600"/>
+<img src="images/audio_speed.JPG" alt="Change Audio Speed" width="600"/>
 
 ### 4. **Change Audio Volume**
-<img src="images/audio_volume.jpg" alt="Change Audio Volume" width="600"/>
+<img src="images/audio_volume.JPG" alt="Change Audio Volume" width="600"/>
 
 ### 5. **Audio Extraction**
-<img src="images/audio_extract.jpg" alt="Audio Extraction" width="600"/>
+<img src="images/audio_extract.JPG" alt="Audio Extraction" width="600"/>
 
 ---
 Feel free to suggest any additional features or improvements!
