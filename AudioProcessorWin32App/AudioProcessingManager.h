@@ -6,6 +6,7 @@
 #include <string>
 #include "AudioFileHandler.h" // Include the necessary header for AudioFileHandler
 #include "EnumClass.h"
+#include "AudioProcessingStrategyFactory.h"
 
 class AudioProcessingManager {
     public:
@@ -14,6 +15,8 @@ class AudioProcessingManager {
         const std::vector<double> getProcessedSignal();
         // Loads an audio file and returns a shared pointer to the AudioFileHandler.
         std::shared_ptr<AudioFileHandler> loadAudioFile(const std::string& filePath);
+
+        bool processAudio(const AudioProcessingStrategyFactory::ParamMap& params);
 
         bool reverseAudio();
         bool reverbAudio(double delayTime, double decayFactor);
