@@ -183,26 +183,31 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         hwndReverseButton = CreateWindowW(L"BUTTON", L"Reverse",
             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
             150, 150, 100, 40, hWnd, (HMENU)ID_REVERSE, hInst, NULL);
+        EnableWindow(hwndReverseButton, FALSE);
 
         // Create the Reverb button
         hwndReverbButton = CreateWindowW(L"BUTTON", L"Reverb",
             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
             260, 150, 100, 40, hWnd, (HMENU)ID_REVERB, hInst, NULL);
+        EnableWindow(hwndReverbButton, FALSE);
 
         // Create the Change Speed button
         hwndChangeSpeedButton = CreateWindowW(L"BUTTON", L"Change Speed",
             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
             370, 150, 150, 40, hWnd, (HMENU)ID_CHANGE_SPEED, hInst, NULL);
+        EnableWindow(hwndChangeSpeedButton, FALSE);
 
         // Create the Change Volume button
         hwndChangeVolumeButton = CreateWindowW(L"BUTTON", L"Change Volume",
             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
             530, 150, 150, 40, hWnd, (HMENU)ID_CHANGE_VOLUME, hInst, NULL);
+        EnableWindow(hwndChangeVolumeButton, FALSE);
 
         // Create the Extract audio button
         hwndExtractAudioButton = CreateWindowW(L"BUTTON", L"Extract Audio",
             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
             690, 150, 150, 40, hWnd, (HMENU)ID_EXTRACT_AUDIO, hInst, NULL);
+        EnableWindow(hwndExtractAudioButton, FALSE);
 
         // Create the Save file button
         hwndSaveFileButton = CreateWindowW(L"BUTTON", L"Save file",
@@ -220,20 +225,37 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case ID_OPEN_FILE:  // Open File Button click event (ID 1)
         {
             // Open the file dialog
-            /*static FileHandler fileHandler;*/
             fileHandler.OpenFileDialog(hWnd);
             SetWindowTextW(hwndInputFilePathBox, fileHandler.GetInputFilePath());
 
             // Use the utility function to convert wide string to std::string
             std::string inputFilePath = Utils::WideToString(fileHandler.GetInputFilePath());
 
+            if (inputFilePath == "")
+            {
+                MessageBox(hWnd, L"Failed to load audio file!", L"Error", MB_OK | MB_ICONERROR);
+                EnableWindow(hwndReverseButton, FALSE);
+                EnableWindow(hwndReverbButton, FALSE);
+                EnableWindow(hwndChangeSpeedButton, FALSE);
+                EnableWindow(hwndChangeVolumeButton, FALSE);
+                EnableWindow(hwndExtractAudioButton, FALSE);
+                EnableWindow(hwndSaveFileButton, FALSE);
+                break;
+            }
+
             audioFileHandler = audioProcessingManager.loadAudioFile(inputFilePath);
             if (audioFileHandler) {
                 //audioProcessingManager.setFileHandler(audioFileHandler);
                 MessageBox(hWnd, L"Audio loaded successfully!", L"Success", MB_OK);
+                EnableWindow(hwndReverseButton, TRUE);
+                EnableWindow(hwndReverbButton, TRUE);
+                EnableWindow(hwndChangeSpeedButton, TRUE);
+                EnableWindow(hwndChangeVolumeButton, TRUE);
+                EnableWindow(hwndExtractAudioButton, TRUE);
             }
             else {
                 MessageBox(hWnd, L"Failed to load audio file!", L"Error", MB_OK | MB_ICONERROR);
+                break;
             }
 
             break;
@@ -389,6 +411,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 message += fileHandler.GetOutputFilePath();  // Append the output file path
 
                 MessageBox(hWnd, message.c_str(), L"Success", MB_OK);
+                EnableWindow(hwndSaveFileButton, FALSE);
             }
             else {
                 OutputDebugStringA("Failed to save audio.\n");

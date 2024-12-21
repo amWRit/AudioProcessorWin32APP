@@ -38,18 +38,29 @@ void FileHandler::OpenFileDialog(HWND hWnd)
 
     if (GetOpenFileNameW(&ofn) == TRUE)
     {
-        // Store the selected file path in the class member
+        // User selected a file; store the path
         FileHandler::SetInputFilePath(ofn.lpstrFile);
-
-        //testing ooutputfilepath
-        //FileHandler::SetOutputFilePath(L"my_audio_file.wav");
+    }
+    else
+    {
+        // User canceled the dialog; set file path to empty
+        FileHandler::SetInputFilePath(L"");
     }
 }
 
 void FileHandler::SetInputFilePath(const wchar_t* path)
 {
-    // Copy the provided path into outputFilePath
-    wcsncpy_s(inputFilePath, path, sizeof(inputFilePath) / sizeof(inputFilePath[0]));
+    if (path != nullptr && wcslen(path) > 0)
+    {
+        // Copy the provided path into inputFilePath
+        wcsncpy_s(inputFilePath, path, sizeof(inputFilePath) / sizeof(inputFilePath[0]));
+    }
+    else
+    {
+        // Set to an empty string if no valid path is provided
+        inputFilePath[0] = L'\0';
+    }
+
 }
 
 

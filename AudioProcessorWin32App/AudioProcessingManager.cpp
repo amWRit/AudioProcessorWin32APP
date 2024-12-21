@@ -49,152 +49,64 @@ std::shared_ptr<AudioFileHandler> AudioProcessingManager::loadAudioFile(const st
 }
 
 bool AudioProcessingManager::reverseAudio() {
-    if (!fileHandler) {
-        OutputDebugStringA("No audio file loaded!");
-        std::cerr << "No audio file loaded!" << std::endl;
-        return false;
-    }
-
-    AudioProcessingStrategyFactory::ParamMap params;
-
-    // Create the reverse audio processing strategy
-    auto strategy = AudioProcessingStrategyFactory::createStrategy(strategyType, params = {});
-    if (!strategy) {
-        OutputDebugStringA("Unsupported strategy!");
-        std::cerr << "Unsupported strategy!" << std::endl;
-        return false;
-    }
-    // Process the audio file and save the reversed signal
-
-    std::vector<double> outputSignal = strategy->process(fileHandler);
-    setProcessedSignal(outputSignal);
-    return true;
+    return processAudio({});
 }
 
 bool AudioProcessingManager::reverbAudio(double delayTime, double decayFactor) {
-    if (!fileHandler) {
-        OutputDebugStringA("No audio file loaded!");
-        std::cerr << "No audio file loaded!" << std::endl;
-        return false;
-    }
-
-    AudioProcessingStrategyFactory::ParamMap params;
-    params["delayTime"] = delayTime;
-    params["decayFactor"] = decayFactor;
-
-    // Create the reverse audio processing strategy
-    auto strategy = AudioProcessingStrategyFactory::createStrategy(strategyType, params);
-    if (!strategy) {
-        OutputDebugStringA("Unsupported strategy!");
-        std::cerr << "Unsupported strategy!" << std::endl;
-        return false;
-    }
-    // Process the audio file and save the reversed signal
-
-    std::vector<double> outputSignal = strategy->process(fileHandler);
-    setProcessedSignal(outputSignal);
-    return true;
+    return processAudio({ {"delayTime", delayTime}, {"decayFactor", decayFactor} });
 }
 
 bool AudioProcessingManager::changeSpeed(double speedFactor) {
-    if (!fileHandler) {
-        OutputDebugStringA("No audio file loaded!");
-        std::cerr << "No audio file loaded!" << std::endl;
-        return false;
-    }
-
-    AudioProcessingStrategyFactory::ParamMap params;
-    params["speedFactor"] = speedFactor;
-
-    // Create the reverse audio processing strategy
-    auto strategy = AudioProcessingStrategyFactory::createStrategy(strategyType, params);
-    if (!strategy) {
-        OutputDebugStringA("Unsupported strategy!");
-        std::cerr << "Unsupported strategy!" << std::endl;
-        return false;
-    }
-    // Process the audio file and save the signal
-
-    std::vector<double> outputSignal = strategy->process(fileHandler);
-    setProcessedSignal(outputSignal);
-    return true;
+    return processAudio({ {"speedFactor", speedFactor} });
 }
 
 bool AudioProcessingManager::changeVolume(double volumeFactor) {
-    if (!fileHandler) {
-        OutputDebugStringA("No audio file loaded!");
-        std::cerr << "No audio file loaded!" << std::endl;
-        return false;
-    }
+    //== Testing ==
+    //char buffer[256];
+    //sprintf_s(buffer, "%.2f", volumeFactor);
+    //OutputDebugStringA((std::string("Volume Factor: ") + buffer + "\n").c_str());
 
-    AudioProcessingStrategyFactory::ParamMap params;
-    params["volumeFactor"] = volumeFactor;
-
-    char buffer[256];
-    sprintf_s(buffer, "%.2f", volumeFactor);  // Adjust the precision as needed
-    OutputDebugStringA(buffer);
-
-    // Create the reverse audio processing strategy
-    auto strategy = AudioProcessingStrategyFactory::createStrategy(strategyType, params);
-    if (!strategy) {
-        OutputDebugStringA("Unsupported strategy!");
-        std::cerr << "Unsupported strategy!" << std::endl;
-        return false;
-    }
-    // Process the audio file and save the signal
-
-    std::vector<double> outputSignal = strategy->process(fileHandler);
-    setProcessedSignal(outputSignal);
-    return true;
+    return processAudio({ {"volumeFactor", volumeFactor} });
 }
 
 bool AudioProcessingManager::extractAudio(InstrumentType instrumentType) {
+    auto instrument = InstrumentFactory::createInstrument(instrumentType);
+    if (!instrument) {
+        OutputDebugStringA("Unsupported instrument type!\n");
+        std::cerr << "Unsupported instrument type!" << std::endl;
+        return false;
+    }
+
+    AudioProcessingStrategyFactory::ParamMap params = {
+        {"lowFreq", instrument->getLowFreq()},
+        {"highFreq", instrument->getHighFreq()}
+    };
+
+    //== Testing == 
+    //char buffer[64];
+    //sprintf_s(buffer, "Low Frequency: %f\n", std::get<double>(params["lowFreq"]));
+    //OutputDebugStringA(buffer);
+
+    //sprintf_s(buffer, "High Frequency: %f\n", std::get<double>(params["highFreq"]));
+    //OutputDebugStringA(buffer);
+
+    return processAudio(params);
+}
+
+bool AudioProcessingManager::processAudio(const AudioProcessingStrategyFactory::ParamMap& params) {
     if (!fileHandler) {
-        OutputDebugStringA("No audio file loaded!");
+        OutputDebugStringA("No audio file loaded!\n");
         std::cerr << "No audio file loaded!" << std::endl;
         return false;
     }
 
-    AudioProcessingStrategyFactory::ParamMap params;
-    std::shared_ptr<Instrument> instrument = InstrumentFactory::createInstrument(instrumentType);
-    if (instrument) {
-        //std::string selectedInstrumentStr = Utils::WideToString(instrumentStr.c_str());
-        std::string debugMessage = "\n\ninst type: " + toString(instrumentType);
-        OutputDebugStringA(debugMessage.c_str());
-        params["lowFreq"] = instrument->getLowFreq();
-        params["highFreq"] = instrument->getHighFreq();
-
-        char str[64]; // A larger buffer to hold the formatted double value
-        double lowFreq = std::get<double>(params["lowFreq"]);
-        double highFreq = std::get<double>(params["highFreq"]);
-
-        //// TESTING
-        sprintf_s(str, "%f", lowFreq);
-        OutputDebugStringA("low: ");
-        OutputDebugStringA(str);
-        OutputDebugStringA("\n");
-
-        sprintf_s(str, "%f", highFreq);
-        OutputDebugStringA("high: ");
-        OutputDebugStringA(str);
-        OutputDebugStringA("\n");
-    }
-    else {
-        OutputDebugStringA("Unsupported strategy!");
-        std::cerr << "Unsupported strategy!" << std::endl;
-        return false;
-    }
-
-    // Create the reverse audio processing strategy
     auto strategy = AudioProcessingStrategyFactory::createStrategy(strategyType, params);
     if (!strategy) {
-        OutputDebugStringA("Unsupported strategy!");
+        OutputDebugStringA("Unsupported strategy!\n");
         std::cerr << "Unsupported strategy!" << std::endl;
         return false;
     }
-    // Process the audio file and save the signal
 
-    std::vector<double> outputSignal = strategy->process(fileHandler);
-    setProcessedSignal(outputSignal);
+    setProcessedSignal(strategy->process(fileHandler));
     return true;
 }
