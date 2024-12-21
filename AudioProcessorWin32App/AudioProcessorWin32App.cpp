@@ -177,32 +177,32 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         // Create the Open file button
         hwndOpenFileButton = CreateWindowW(L"BUTTON", L"Open file",
             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-            50, 100, 100, 40, hWnd, (HMENU)ID_OPEN_FILE, hInst, NULL);
+            450, 100, 100, 40, hWnd, (HMENU)ID_OPEN_FILE, hInst, NULL);
 
         // Create the Reverse button
         hwndReverseButton = CreateWindowW(L"BUTTON", L"Reverse",
             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-            200, 100, 100, 40, hWnd, (HMENU)ID_REVERSE, hInst, NULL);
+            150, 150, 100, 40, hWnd, (HMENU)ID_REVERSE, hInst, NULL);
 
         // Create the Reverb button
         hwndReverbButton = CreateWindowW(L"BUTTON", L"Reverb",
             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-            350, 100, 100, 40, hWnd, (HMENU)ID_REVERB, hInst, NULL);
+            260, 150, 100, 40, hWnd, (HMENU)ID_REVERB, hInst, NULL);
 
         // Create the Change Speed button
         hwndChangeSpeedButton = CreateWindowW(L"BUTTON", L"Change Speed",
             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-            500, 100, 150, 40, hWnd, (HMENU)ID_CHANGE_SPEED, hInst, NULL);
+            370, 150, 150, 40, hWnd, (HMENU)ID_CHANGE_SPEED, hInst, NULL);
 
         // Create the Change Volume button
         hwndChangeVolumeButton = CreateWindowW(L"BUTTON", L"Change Volume",
             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-            700, 100, 150, 40, hWnd, (HMENU)ID_CHANGE_VOLUME, hInst, NULL);
+            530, 150, 150, 40, hWnd, (HMENU)ID_CHANGE_VOLUME, hInst, NULL);
 
         // Create the Extract audio button
         hwndExtractAudioButton = CreateWindowW(L"BUTTON", L"Extract Audio",
             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-            450, 200, 150, 40, hWnd, (HMENU)ID_EXTRACT_AUDIO, hInst, NULL);
+            690, 150, 150, 40, hWnd, (HMENU)ID_EXTRACT_AUDIO, hInst, NULL);
 
         // Create the Save file button
         hwndSaveFileButton = CreateWindowW(L"BUTTON", L"Save file",
