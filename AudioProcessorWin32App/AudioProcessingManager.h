@@ -24,6 +24,8 @@ class AudioProcessingManager {
         bool changeVolume(double volumeFactor);
         bool extractAudio(InstrumentType instrumentType);
 
+        std::string detectInstrument();
+
         StrategyType strategyType;
 
     private:

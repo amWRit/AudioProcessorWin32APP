@@ -3,6 +3,7 @@
 #define INSTRUMENT_H
 
 #include <memory>
+#include <string>
 
 class Instrument {
 public:

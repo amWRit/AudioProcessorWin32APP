@@ -29,6 +29,8 @@
 #define ID_EXTRACT_AUDIO 1006
 #define ID_SAVE_FILE 2001
 
+#define ID_INSTRUMENT_DETECTION 3000
+
 // Global Variables:
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
@@ -41,6 +43,7 @@ HWND hwndReverbButton;
 HWND hwndChangeSpeedButton;
 HWND hwndChangeVolumeButton;
 HWND hwndExtractAudioButton;
+HWND hwndInstrumentDetectButton;
 HWND hwndSaveFileButton;
 HWND hwndInputFilePathBox;
 HWND hwndFactorBox;
@@ -209,6 +212,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             690, 150, 150, 40, hWnd, (HMENU)ID_EXTRACT_AUDIO, hInst, NULL);
         EnableWindow(hwndExtractAudioButton, FALSE);
 
+        // Create the Instrument Detect button
+        hwndInstrumentDetectButton = CreateWindowW(L"BUTTON", L"Detect",
+            WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+            850, 150, 100, 40, hWnd, (HMENU)ID_INSTRUMENT_DETECTION, hInst, NULL);
+        EnableWindow(hwndInstrumentDetectButton, FALSE);
+
         // Create the Save file button
         hwndSaveFileButton = CreateWindowW(L"BUTTON", L"Save file",
             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
@@ -239,6 +248,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 EnableWindow(hwndChangeSpeedButton, FALSE);
                 EnableWindow(hwndChangeVolumeButton, FALSE);
                 EnableWindow(hwndExtractAudioButton, FALSE);
+                EnableWindow(hwndInstrumentDetectButton, FALSE);
                 EnableWindow(hwndSaveFileButton, FALSE);
                 break;
             }
@@ -252,6 +262,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 EnableWindow(hwndChangeSpeedButton, TRUE);
                 EnableWindow(hwndChangeVolumeButton, TRUE);
                 EnableWindow(hwndExtractAudioButton, TRUE);
+                //EnableWindow(hwndInstrumentDetectButton, TRUE);
             }
             else {
                 MessageBox(hWnd, L"Failed to load audio file!", L"Error", MB_OK | MB_ICONERROR);
@@ -374,6 +385,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 MessageBox(hWnd, L"Failed to extract the audio file!", L"Error", MB_OK | MB_ICONERROR);
                 break;
             }
+            break;
+        }
+
+        case ID_INSTRUMENT_DETECTION: // detect instrument
+        {
+            std::string instrument = audioProcessingManager.detectInstrument();
+            OutputDebugStringA(instrument.c_str());
+
+            std::wstring message = L"Detected Instrument: " + std::wstring(instrument.begin(), instrument.end());
+            MessageBox(hWnd, message.c_str(), L"Instrument Detection", MB_OK);
             break;
         }
 
